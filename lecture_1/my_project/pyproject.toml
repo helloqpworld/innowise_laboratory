@@ -1,10 +1,4 @@
 [project]
-name = "my_project"
-version = "0.1.0"
-description = "Это мой небольшой проект в Innowise Lab"
-authors = [
-  { name = "Мое Имя", email = "myemail@gmail.com" }
-]
-
-[dependencies]
-colorama = "0.4.6"
+name = "my_project_innowise_lab"
+version = "0.0.1"
+dependencies = ["colorama == 0.4.6"]
