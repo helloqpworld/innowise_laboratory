@@ -1,11 +1,16 @@
-def generate_profile(age:int) -> str:
+'''This is Mini-Profile Generator / lecture 2'''
+
+
+def generate_profile(age: int) -> str:
+    '''Return Life Stage.
+    This function should return the life stage string.
+    '''
     if 0 <= age <= 12:
         return 'Child'
     elif 13 <= age <= 19:
         return 'Teenager'
     else:
         return 'Adult'
-
 
 
 user_name = input('Enter your full name: ')
@@ -15,15 +20,13 @@ current_age = 2025 - birth_year
 life_stage = generate_profile(current_age)
 
 
-
 hobbies = []
 hobby = input('Enter a favorite hobby or ' \
-                        'type \'stop\' to finish: ')
+              'type \'stop\' to finish: ')
 while hobby != 'stop':
     hobbies.append(hobby)
     hobby = input('Enter a favorite hobby or ' \
-                        'type \'stop\' to finish: ')
-
+                  'type \'stop\' to finish: ')
 
 
 user_profile = {
@@ -32,7 +35,6 @@ user_profile = {
     'stage': life_stage,
     'hobbies': hobbies
 }
-
 
 
 print()
