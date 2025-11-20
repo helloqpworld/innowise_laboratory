@@ -23,7 +23,7 @@ life_stage = generate_profile(current_age)
 hobbies = []
 hobby = input('Enter a favorite hobby or ' \
               'type \'stop\' to finish: ')
-while hobby != 'stop':
+while hobby.lower() != 'stop':
     hobbies.append(hobby)
     hobby = input('Enter a favorite hobby or ' \
                   'type \'stop\' to finish: ')
