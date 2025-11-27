@@ -1,7 +1,11 @@
-'''Lecture 3. The Student Grade Analyzer'''
+'''Lecture 3. The Student Grade Analyzer.
+A single program that manages and annalyzes student grades.
+'''
 
 def get_user_choice() -> int:
-    '''Display menu and get validated user choice (1-5).'''
+    '''Display menu and get validated user choice (1-5).
+    '''
+
     print('\n--- Student Grade Analyzer ---')
     print('1. Add a new student')
     print('2. Add grades for a student')
@@ -23,15 +27,41 @@ def get_user_choice() -> int:
             print('Invalid combination. Ctrl + Z.')
 
 def get_name(message: str) -> str | None:
-    '''Get and validate name, return None on 'exit'.'''
+    '''Get and validate name
+    Return name or 'exit'.
+    '''
     while True:
         try:
             name = input(message).strip().title()
             if name.lower()=='exit':
                 return None
+            if sum(1 for ch in name if ch.isalpha()) < 2:
+                print('There are too few letters for a name.')
+                name = ''
             if name.isalpha():
                 return name
-            print('The name must contain only letters. Enter name or \'Exit\' to exit.')
+            # We check the name for extra characters.
+            for symb in name:
+                if not symb.isalpha() and not symb in (' ', '-'):
+                    print(f'The name must not contain this character: {symb}')
+                    print('Enter name or \'Exit\' to exit.')
+                    name = ''
+                    break
+            # We clean from unnecessary ' ' and '-'.
+            p = 0
+            while p <= len(name)-2 and name:
+                if name[0] in (' ', '-'):
+                    name = name[1:]
+                    continue
+                if name[len(name)-1] in (' ', '-'):
+                    name = name[:len(name)-1]
+                    continue
+                if name[p] in (' ', '-') and name[p+1] in (' ', '-'):
+                    name = name[:p] + name[p+1:]
+                else:
+                    p += 1
+            if name:
+                return name
         except KeyboardInterrupt:
             print('Invalid combination. Ctrl + C.')
         except EOFError:
@@ -59,13 +89,13 @@ def add_grades(students_list: list) -> None:
                 if n.lower() == 'done':
                     return None
                 try:
-                    n = float(n)
+                    n = int(n)
                     if 0 <= n <= 100:
                         item['grades'].append(n)
                     else:
                         print('Invalid input. Please enter a number from 0 to 100.')
                 except ValueError:
-                    print('Invalid input. Please enter a number.')
+                    print('Invalid input. Please enter an integer number.')
     print('The student is not found.')
     return None
 
@@ -89,30 +119,29 @@ def generate_report(students_list: list):
             print(f'{name}\'s average grade is N/A.')
     print('--------------------------')
     if count:
-        print(f'Max Average: {max_avg}')
-        print(f'Min Average: {min_avg}')
-        print(f'Overall Average: {sum_avg / count}')
+        print(f'Max Average: {max_avg:.2f}')
+        print(f'Min Average: {min_avg:.2f}')
+        print(f'Overall Average: {(sum_avg / count):.2f}')
     elif not students_list:
         print('There are no students.')
     else:
         print('There are no grades.')
 
-def top_student(students_list: list):
+def top_student(students_list: list) -> None:
     '''Find and display the student with the highest average grade.'''
-    find_max = lambda marks: sum(marks) / len(marks) if marks else -1
-    max_avg = -1
-    maax_name= ''
-    for item in students_list:
-        avg = find_max(item['grades'])
-        if max_avg < avg:
-            maax_name = item['name']
-            max_avg = round(avg, 2)
     if not students_list:
         print('There is no student added.')
-    elif max_avg == -1:
+        return
+
+    students_graded = [stud for stud in students if stud["grades"]]
+    if not students_graded:
         print('There is no grades added.')
-    else:
-        print(f'The student with highest average is {maax_name} with a grade of {max_avg}.')
+        return
+
+    best_stud = max(students_graded, key=lambda stud: sum(stud["grades"]) / len(stud["grades"]))
+    stud_avg = round(sum(best_stud["grades"]) / len(best_stud["grades"]), 2)
+    print(f'The student with highest average is {best_stud["name"]} with a grade of {stud_avg}.')
+
 
 students = []
 while True:
