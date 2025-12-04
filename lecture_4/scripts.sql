@@ -93,4 +93,4 @@ LIMIT 3;
 SELECT DISTINCT s.full_name
 FROM students s
 JOIN grades g ON s.id = g.student_id
-WHERE g.grade < 80
+WHERE g.grade < 80;
